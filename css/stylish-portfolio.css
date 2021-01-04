@@ -1,6 +1,6 @@
 /*!
  * Start Bootstrap - Stylish Portfolio v5.0.9 (https://startbootstrap.com/theme/stylish-portfolio)
- * Copyright 2013-2020 Start Bootstrap
+ * Copyright 2013-2021 Start Bootstrap
  * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-stylish-portfolio/blob/master/LICENSE)
  */
 
@@ -83,6 +83,11 @@ h6 {
 
 .scroll-to-top i {
   font-weight: 800;
+}
+
+.bgblur {
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 .masthead {

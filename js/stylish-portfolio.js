@@ -40,25 +40,38 @@
     }
   });
 
+
+
+  var verbs, nouns, adjectives, adverbs, preposition;
+  nouns = ["z omejitvami", "nepreklicno", "brez omejitev", "začasno", "do nadaljnega", "z upoštevanjem distance", "samo za eno osebo naenkrat", "za družine z največ 3 člani", "brezpogojno"];
+  verbs = ["zapre", "omeji", "odpre", "ukine", "delno odpre", "pod nadzorom odpre", "sprosti"];
+  adjectives = ["šole", "frizerske salone", "turno smučanje", "kuharske tečaje", "obisk javnih WC-jev", "individualne tečaje joge", "vse osnovne šole", "shiatsu masažne salone", "konzumiranje bureka v javnosti", "avtošole", "pomerjanje oblačil v javnosti", "ročne avtopralnice", "izvajanje javnega prevoza z rikšo", "nočne klube", "Zoom klice", "Skype video-klice", "prezračevanje verskih objektov", "zavarovalniške storitve"];
+  adverbs = ["v epidemiološko ugodnih regijah", "v vseh regijah, ki se začnejo na črko '"+String.fromCharCode(65+Math.floor(Math.random() * 26))+"'", "v naključni statistični regiji", "za strice iz ozadja", "v regiji z največjim pridelkom krompirja", "v največji regiji", "v občinah z lihim številom prebivalcev", "v regijah brez taxijev", "na meji s Hrvaško", "v zasebnih zobozdravstvenih ambulantah"];
+  preposition = ["z izkazom negativnega testa", "z odličnim osnovnošolskim spričevalom", "v spremstvu obeh starih staršev", "z dvema kirurškima maskama", "brez volnenih rokavic", ", če ima oseba rjave lase", "za izvajanje neprofitne dejavnosti", "za tetoverje", "za osebe brez pametnega telefona", "če je zapadlo več kot 1m snega", "za izvajanje vzdrževalnih del", "za prihod na delo, brez odhoda", "za dostop do sanitarij", "za čiščenje in pospravljanje bazena", "z dezinfekcijo rok in nog"];
+
+  function randGen() {
+    return Math.floor(Math.random() * 5);
+  }
+
+  function sentence() {
+    var rand1 = Math.floor(Math.random() * nouns.length);
+    var rand2 = Math.floor(Math.random() * verbs.length);
+    var rand3 = Math.floor(Math.random() * adjectives.length);
+    var rand4 = Math.floor(Math.random() * adverbs.length);
+    var rand5 = Math.floor(Math.random() * preposition.length);
+    var rand6 = Math.floor(Math.random() * 10);
+    var content = "Vlada naj " + nouns[rand1] + " " + verbs[rand2] + " " + adjectives[rand3] + " " + adverbs[rand4] + ", a le " + preposition[rand5] +  ".";
+
+    $('#sentence').html("&quot;" + content + "&quot;");
+  };
+  sentence();
+
+  $("#regenerate-sentence").click(function(e) {
+    e.preventDefault();
+    sentence();
+  });
+
+
+
 })(jQuery); // End of use strict
 
-// Disable Google Maps scrolling
-// See http://stackoverflow.com/a/25904582/1607849
-// Disable scroll zooming and bind back the click event
-var onMapMouseleaveHandler = function(event) {
-  var that = $(this);
-  that.on('click', onMapClickHandler);
-  that.off('mouseleave', onMapMouseleaveHandler);
-  that.find('iframe').css("pointer-events", "none");
-}
-var onMapClickHandler = function(event) {
-  var that = $(this);
-  // Disable the click handler until the user leaves the map area
-  that.off('click', onMapClickHandler);
-  // Enable scrolling zoom
-  that.find('iframe').css("pointer-events", "auto");
-  // Handle the mouse leave event
-  that.on('mouseleave', onMapMouseleaveHandler);
-}
-// Enable map zooming with mouse scroll when the user clicks the map
-$('.map').on('click', onMapClickHandler);
