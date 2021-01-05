@@ -45,9 +45,9 @@
   var verbs, nouns, adjectives, adverbs, preposition;
   nouns = ["z omejitvami", "nepreklicno", "brez omejitev", "začasno", "do nadaljnega", "z upoštevanjem distance", "le za eno osebo naenkrat", "za družine z največ 3 člani", "brezpogojno", "ob dokazu 100-dnevne karantene", "za en teden", "za naslednjih 14 ključnih dni", "za valentinovo"];
   verbs = ["zapre", "omeji", "odpre", "ukine", "delno odpre", "pod nadzorom odpre", "sprosti", "odpravi"];
-  adjectives = ["šolanje", "frizerske salone", "turno smučanje", "kuharske tečaje", "obiske javnih WC-jev", "individualne tečaje joge", "vse osnovne šole", "shiatsu masažne salone", "konzumiranje bureka v javnosti", "avtošole", "pomerjanje oblačil v javnosti", "ročne avtopralnice", "izvajanje javnega prevoza z rikšo", "nočne klube", "Zoom klice", "Skype video-klice", "prezračevanje verskih objektov", "zavarovalniške storitve", "motivacijske spikerje", "glasno govorjenje v knjižnici"];
-  adverbs = ["v epidemiološko ugodnih regijah", "v občinah, ki se začnejo na črko '"+String.fromCharCode(65+Math.floor(Math.random() * 26))+"'", "v naključni statistični regiji", "za strice iz ozadja", "v regiji z največjim pridelkom krompirja", "v največji regiji", "v občinah z lihim številom prebivalcev", "v regijah brez taxijev", "na meji s Hrvaško", "v zasebnih zobozdravstvenih ambulantah", "na avtocestnih bencinskih črpalkah"];
-  preposition = ["z izkazom negativnega testa", "z odličnim osnovnošolskim spričevalom", "v spremstvu obeh starih staršev", "z dvema kirurškima maskama", "brez volnenih rokavic", ", če ima oseba rjave lase", "za izvajanje neprofitne dejavnosti", "za tetoverje", "za osebe brez pametnega telefona", "če je zapadlo več kot 1m snega", "za izvajanje vzdrževalnih del", "za prihod na delo, brez odhoda", "za dostop do sanitarij", "za čiščenje in pospravljanje bazena", "z dezinfekcijo rok in nog", "za imetnike letnih smučarskih kart", "za rekreativne dejavnosti", "za fitnes guruje", "za potrebe verouka", "za lastnike Oplov", "preko spleta"];
+  adjectives = ["šolanje", "frizerske salone", "turno smučanje", "kuharske tečaje", "obiske javnih WC-jev", "individualne tečaje joge", "vse osnovne šole", "shiatsu masažne salone", "konzumiranje bureka v javnosti", "avtošole", "pomerjanje oblačil v javnosti", "ročne avtopralnice", "izvajanje javnega prevoza z rikšo", "nočne klube", "Zoom klice", "Skype video-klice", "prezračevanje verskih objektov", "zavarovalniške storitve", "motivacijske spikerje", "glasno govorjenje v knjižnicah", "prevoz oseb s krožno kabinskimi žičnicami", "vpise v register pridelovalcev grozdja"];
+  adverbs = ["v epidemiološko ugodnih regijah", "v občinah, ki se začnejo na črko '"+String.fromCharCode(65+Math.floor(Math.random() * 26))+"'", "v naključni statistični regiji", "za strice iz ozadja", "v regiji z največjim pridelkom krompirja", "v največji regiji", "v občinah z lihim številom prebivalcev", "v regijah brez taxijev", "na meji s Hrvaško", "v zasebnih zobozdravstvenih ambulantah", "na avtocestnih bencinskih črpalkah", "v restavracijah s hitro prehrano", "na javnih kopališčih", "na zasebnih terasah", "pri manjših družinah"];
+  preposition = ["z izkazom negativnega testa", "z odličnim osnovnošolskim spričevalom", "v spremstvu obeh starih staršev", "z dvema kirurškima maskama", "brez volnenih rokavic", "če ima oseba rjave lase", "za izvajanje neprofitne dejavnosti", "za tetoverje", "za osebe brez pametnega telefona", "če je zapadlo več kot 1m snega", "za izvajanje vzdrževalnih del", "za prihod na delo, brez odhoda", "za dostop do sanitarij", "za čiščenje in pospravljanje bazena", "z dezinfekcijo rok in nog", "za imetnike letnih smučarskih kart", "za rekreativne dejavnosti", "za fitnes guruje", "za potrebe verouka", "za lastnike Oplov", "preko spleta", "ob nošnji gojzerjev", "za člane istega gospodinjstva", "če se napoveste s telefonskih klicem", "če so prisotne največ tri osebe", "s potrdilom o samoizolaciji"];
 
   function randGen() {
     return Math.floor(Math.random() * 5);
@@ -62,7 +62,8 @@
     var rand6 = Math.floor(Math.random() * 10);
     var content = "Vlada naj " + nouns[rand1] + " " + verbs[rand2] + " " + adjectives[rand3] + " " + adverbs[rand4] + ", a le " + preposition[rand5] +  ".";
 
-    $('#sentence').html("&quot;" + content + "&quot;");
+    $('#sentence').fadeOut(750, function() { $('#sentence').html("&quot;" + content + "&quot;").fadeIn() });;
+
   };
   sentence();
 
