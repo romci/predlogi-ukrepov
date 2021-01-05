@@ -1,6 +1,32 @@
 (function($) {
   "use strict"; // Start of use strict
 
+  var worksheets = [''];
+  var dbValues = {};
+
+	worksheets.forEach(function(worksheet){
+ 		$.googleSheetToJSON('1UUGsDwlw74CGjHcms1OTGTx20rPRuBruoUeEmAacq9Y', worksheet)
+			.done(function(rows){
+
+        dbValues = {};
+				rows.forEach(function(row){
+					Object.getOwnPropertyNames(row).forEach(function(name){
+						var val = [].concat(row[name]).join(' / ');
+            if (!dbValues[name]) dbValues[name] = [];
+            dbValues[name].push(val);
+					});
+        });
+        
+        updateDbValues();
+        sentence(location.hash);
+
+			})
+			.fail(function(err){
+				console.log('error!', err);
+			});
+	});
+
+
   // Closes the sidebar menu
   $(".menu-toggle").click(function(e) {
     e.preventDefault();
@@ -51,12 +77,15 @@
 
 
   var verbs, nouns, adjectives, adverbs, preposition, exceptions;
-  nouns = ["z omejitvami", "nepreklicno", "brez omejitev", "začasno", "do nadaljnega", "z upoštevanjem distance", "le za eno osebo naenkrat", "za družine z največ 3 člani", "brezpogojno", "ob dokazu 100-dnevne karantene", "za en teden", "za naslednjih 14 ključnih dni", "za valentinovo"];
-  verbs = ["zapre", "omeji", "odpre", "ukine", "delno odpre", "pod nadzorom odpre", "sprosti", "odpravi"];
-  adjectives = ["šolanje", "frizerske salone", "turno smučanje", "kuharske tečaje", "obiske javnih WC-jev", "individualne tečaje joge", "vse osnovne šole", "shiatsu masažne salone", "konzumiranje bureka v javnosti", "avtošole", "pomerjanje oblačil v javnosti", "ročne avtopralnice", "izvajanje javnega prevoza z rikšo", "nočne klube", "Zoom klice", "Skype video-klice", "prezračevanje verskih objektov", "zavarovalniške storitve", "motivacijske spikerje", "glasno govorjenje v knjižnicah", "prevoz oseb s krožno kabinskimi žičnicami", "vpise v register pridelovalcev grozdja", "kinematografe na Goriškem"];
-  adverbs = ["v epidemiološko ugodnih regijah", "v občinah, ki se začnejo na črko '"+String.fromCharCode(65+Math.floor(Math.random() * 26))+"'", "v naključni statistični regiji", "za strice iz ozadja", "v regiji z največjim pridelkom krompirja", "v največji regiji", "v občinah z lihim številom prebivalcev", "v regijah brez taxijev", "na meji s Hrvaško", "v zasebnih zobozdravstvenih ambulantah", "na avtocestnih bencinskih črpalkah", "v restavracijah s hitro prehrano", "na javnih kopališčih", "na zasebnih terasah", "pri manjših družinah"];
-  preposition = ["z izkazom negativnega testa", "z odličnim osnovnošolskim spričevalom", "v spremstvu obeh starih staršev", "z dvema kirurškima maskama", "brez volnenih rokavic", "za osebe z rjavimi lasmi", "za izvajanje neprofitne dejavnosti", "za tetoverje", "za osebe brez pametnega telefona", "če je zapadlo več kot 1m snega", "za izvajanje vzdrževalnih del", "za prihod na delo, brez odhoda", "za dostop do sanitarij", "za čiščenje in pospravljanje bazena", "z dezinfekcijo rok in nog", "za imetnike letnih smučarskih kart", "za rekreativne dejavnosti", "za fitnes guruje", "za potrebe verouka", "za lastnike Oplov", "preko spleta", "ob nošnji gojzerjev", "za člane istega gospodinjstva", "če se napoveste s telefonskih klicem", "če so prisotne največ tri osebe", "s potrdilom o samoizolaciji", "z SMS-om od NIJZ", "za nakupe izdelkov brez garancije", "če je možno zagotoviti 3m razdalje med osebami", "za potovanja s sobnim kolesom"];
-  exceptions = ["a le", "razen", "še posebej"];
+
+  function updateDbValues() {
+    nouns = dbValues.nakaksennacinzakolikocasakdaj;
+    verbs = dbValues.kateroakcijo;
+    adjectives = dbValues.kateripanogi;
+    adverbs = dbValues.kjezakoga;
+    preposition = dbValues.kaksnaizjemapotrdilo;
+    exceptions = dbValues.izjemapotrdilo;
+}
 
   function randGen() {
     return Math.floor(Math.random() * 5);
@@ -106,9 +135,7 @@
 
   };
 
-  sentence(location.hash);
-
-  $("#regenerate-sentence").click(function(e) {
+    $("#regenerate-sentence").click(function(e) {
     e.preventDefault();
     sentence();
   });
