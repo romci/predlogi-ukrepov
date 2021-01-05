@@ -83,12 +83,6 @@
   });
 
 
-  // Opens a pop-up with twitter sharing dialog
-
-var url = "http://google.com";
-var text = "Replace this with your text";
-
-
   $("#share-fb").click(function () {
     var value = encodeURIComponent(window.location.href);
     var description = "\"" + $('meta[name="description"]').attr("content") + "\"";
@@ -102,7 +96,7 @@ var text = "Replace this with your text";
   });
 
 
-  var verbs, nouns, adjectives, adverbs, preposition, exceptions;
+  var verbs, nouns, adjectives, adverbs, preposition, exceptions, total_options;
 
   function updateDbValues() {
     nouns = dbValues.nakaksennacinzakolikocasakdaj;
@@ -111,6 +105,9 @@ var text = "Replace this with your text";
     adverbs = dbValues.kjezakoga;
     preposition = dbValues.kaksnaizjemapotrdilo;
     exceptions = dbValues.izjemapotrdilo;
+
+    total_options = nouns.length * verbs.length * adjectives.length * adverbs.length * preposition.length * exceptions.length;
+    $("#total_options").html(total_options.toLocaleString());
 }
 
   function randGen() {
