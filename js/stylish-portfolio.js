@@ -73,7 +73,7 @@
   $("#share-twitter").click(function () {
     var value = encodeURIComponent(window.location.href);
     var description = "\"" + $('meta[name="description"]').attr("content") + "\"";
-    var shareURL='http://twitter.com/share?url='+encodeURIComponent(value)+'&text='+encodeURIComponent(description);
+    var shareURL='http://twitter.com/share?url='+value+'&text='+encodeURIComponent(description);
     window.open(shareURL, "_blank");
         
     gtag('event', 'ShareSentence', {
