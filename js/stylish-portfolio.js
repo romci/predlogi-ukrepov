@@ -1,30 +1,33 @@
 (function($) {
   "use strict"; // Start of use strict
 
-  var worksheets = [''];
   var dbValues = {};
 
-	worksheets.forEach(function(worksheet){
- 		$.googleSheetToJSON('1UUGsDwlw74CGjHcms1OTGTx20rPRuBruoUeEmAacq9Y', worksheet)
-			.done(function(rows){
+  $.googleSheetToJSON('1UUGsDwlw74CGjHcms1OTGTx20rPRuBruoUeEmAacq9Y', '')
+    .done(function(rows){
 
-        dbValues = {};
-				rows.forEach(function(row){
-					Object.getOwnPropertyNames(row).forEach(function(name){
-						var val = [].concat(row[name]).join(' / ');
-            if (!dbValues[name]) dbValues[name] = [];
-            dbValues[name].push(val);
-					});
+      dbValues = {};
+      rows.forEach(function(row){
+        Object.getOwnPropertyNames(row).forEach(function(name){
+          var val = [].concat(row[name]).join(' / ');
+          if (!dbValues[name]) dbValues[name] = [];
+          dbValues[name].push(val);
         });
-        
-        updateDbValues();
-        sentence(location.hash);
+      });
+      
+      updateDbValues();
+      sentence(location.hash);
 
-			})
-			.fail(function(err){
-				console.log('error!', err);
-			});
-	});
+    })
+    .fail(function(err){
+      $('#sentence').html("Napaka pri nalaganju, poskusite osvežiti stran");
+      gtag('event', 'Errors', {
+        'event_category' : 'GoogleSheetError',
+        'event_label' : err
+      });
+    });
+
+
 
 
   // Closes the sidebar menu
@@ -73,6 +76,10 @@
     var sharerURL="https://www.facebook.com/sharer/sharer.php?title="+encodeURIComponent(document.title)+"&quote="+encodeURIComponent(description)+"&u=";
     var shareURL = sharerURL + value;
     window.open(shareURL, "_blank");
+    gtag('event', 'ShareSentence', {
+      'event_category' : 'ShareOnFB',
+      'event_label' : '1'
+    });    
   });
 
 
@@ -138,9 +145,12 @@
     $("#regenerate-sentence").click(function(e) {
     e.preventDefault();
     sentence();
+    gtag('event', 'Sentence', {
+      'event_category' : 'ReloadSentence',
+      'event_label' : '1'
+    });          
   });
 
 
 
 })(jQuery); // End of use strict
-
