@@ -41,6 +41,14 @@
   });
 
 
+  $("#share-fb").click(function () {
+    var value = encodeURIComponent(window.location.href);
+    var description = "\"" + $('meta[name="description"]').attr("content") + "\"";
+    var sharerURL="https://www.facebook.com/sharer/sharer.php?title="+encodeURIComponent(document.title)+"&quote="+encodeURIComponent(description)+"&u=";
+    var shareURL = sharerURL + value;
+    window.open(shareURL, "_blank");
+  });
+
 
   var verbs, nouns, adjectives, adverbs, preposition, exceptions;
   nouns = ["z omejitvami", "nepreklicno", "brez omejitev", "začasno", "do nadaljnega", "z upoštevanjem distance", "le za eno osebo naenkrat", "za družine z največ 3 člani", "brezpogojno", "ob dokazu 100-dnevne karantene", "za en teden", "za naslednjih 14 ključnih dni", "za valentinovo"];
@@ -54,19 +62,51 @@
     return Math.floor(Math.random() * 5);
   }
 
-  function sentence() {
-    var rand1 = Math.floor(Math.random() * nouns.length);
-    var rand2 = Math.floor(Math.random() * verbs.length);
-    var rand3 = Math.floor(Math.random() * adjectives.length);
-    var rand4 = Math.floor(Math.random() * adverbs.length);
-    var rand5 = Math.floor(Math.random() * preposition.length);
-    var rand6 = Math.floor(Math.random() * exceptions.length);
+  function sentence(hash) {
+    var set_from_hash = false;
+    var rand1, rand2, rand3, rand4, rand5, rand6;
+
+    if (hash) {
+      var unhexed_hash = decodeURIComponent(hash).replace("#", '').split(':');
+      if (unhexed_hash && unhexed_hash.length == 6) {
+        rand1 = unhexed_hash[0];
+        rand2 = unhexed_hash[1];
+        rand3 = unhexed_hash[2];
+        rand4 = unhexed_hash[3];
+        rand5 = unhexed_hash[4];
+        rand6 = unhexed_hash[5];
+        
+        set_from_hash = true;
+      }
+
+    }
+
+    if (!set_from_hash) {
+      rand1 = Math.floor(Math.random() * nouns.length);
+      rand2 = Math.floor(Math.random() * verbs.length);
+      rand3 = Math.floor(Math.random() * adjectives.length);
+      rand4 = Math.floor(Math.random() * adverbs.length);
+      rand5 = Math.floor(Math.random() * preposition.length);
+      rand6 = Math.floor(Math.random() * exceptions.length);
+    }
     var content = "Vlada naj " + nouns[rand1] + " " + verbs[rand2] + " " + adjectives[rand3] + " " + adverbs[rand4] + ", " + exceptions[rand6] + " " + preposition[rand5] +  ".";
 
-    $('#sentence').fadeOut(750, function() { $('#sentence').html("&quot;" + content + "&quot;").fadeIn() });;
+    var new_hash = [rand1, rand2, rand3, rand4, rand5, rand6].join(':');
+    var hexed_hash = encodeURIComponent(new_hash);
+
+    location.hash = hexed_hash;
+    // document.title = content;
+    $('meta[name="description"]').attr("content", content);
+
+    if (set_from_hash) {
+      $('#sentence').html("&quot;" + content + "&quot;");
+    } else {
+      $('#sentence').fadeOut(750, function() { $('#sentence').html("&quot;" + content + "&quot;").fadeIn() });
+    }
 
   };
-  sentence();
+
+  sentence(location.hash);
 
   $("#regenerate-sentence").click(function(e) {
     e.preventDefault();
