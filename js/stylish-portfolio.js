@@ -96,15 +96,11 @@
   });
 
   $("#share-meme").click(function () {
-    var templateId = "290174140";
-    var url = "https://api.imgflip.com/caption_image";
-    var value = "Predlagam naslednji protikoronski ukrep:";
-    var description = $('#sentence').text();
-    description = description.replace(/((?:.*?\s){4}.*?)\s/g, '$1\\n');
-    //var sharerURL="https://api.memegen.link/images/preview.jpg?template=https://upload.wikimedia.org%2Fwikipedia%2Fcommons%2F7%2F72%2FJelko_Kacin_2013_(cropped).jpg";
-    var shareURL="https://urlme.me/uploaded-9fff408e2524f06724140542102d5cad/"+encodeURIComponent(value)+"/"+encodeURIComponent(description)+".jpg";
-    //var shareURL = sharerURL + "&lines[]="+encodeURIComponent(value);
-    //shareURL = shareURL + "&lines[]="+encodeURIComponent(description);
+    var url = "https://ealtbing.sirv.com/Images/Jelko_Kacin_2013_(cropped).jpg?profile=JK&text.0.font.weight=700&text.0.text=_TEXT_&text.0.outline.color=000000&text.0.outline.width=5&text.0.color=ffffff&text.0.size=95&text.0.background.color=ffffff&text.1.text=_TITLE_&text.1.position.gravity=north&text.1.size=80&text.1.color=ffffff&text.1.font.weight=700&text.1.outline.color=000000&text.1.outline.width=10&text.2.text=https%3A%2F%2Fromci.github.io%2Fpredlogi-ukrepov&text.2.position.gravity=south&text.2.size=70&text.2.color=ffffff&text.2.outline.width=2&brightness=30&colortone=texas";
+    var value = $('#lbl-title').text().toUpperCase();
+    var description = $('#sentence').text().toUpperCase();
+    description = description.replace(/((?:.*?\s){3}.*?)\s/g, '$1\n');
+    var shareURL = url.replace('_TEXT_', encodeURIComponent(description)).replace('_TITLE_', encodeURIComponent(value));
     window.open(shareURL, "_blank");
     gtag('event', 'ShareSentence', {
       'event_category' : 'ShareMeme',
