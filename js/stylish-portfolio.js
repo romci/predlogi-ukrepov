@@ -73,7 +73,7 @@
   $("#share-twitter").click(function () {
     var value = encodeURIComponent(window.location.href);
     var description = "\"" + $('meta[name="description"]').attr("content") + "\"";
-    var shareURL='http://twitter.com/share?url='+value+'&text='+encodeURIComponent(description);
+    var shareURL='http://twitter.com/share?hashtags=generatorukrepov&url='+value+'&text='+encodeURIComponent(description);
     window.open(shareURL, "_blank");
         
     gtag('event', 'ShareSentence', {
@@ -86,7 +86,7 @@
   $("#share-fb").click(function () {
     var value = encodeURIComponent(window.location.href);
     var description = "\"" + $('meta[name="description"]').attr("content") + "\"";
-    var sharerURL="https://www.facebook.com/sharer/sharer.php?title="+encodeURIComponent(document.title)+"&quote="+encodeURIComponent(description)+"&u=";
+    var sharerURL="https://www.facebook.com/sharer/sharer.php?&hashtag=%23generatorukrepov&title="+encodeURIComponent(document.title)+"&quote="+encodeURIComponent(description)+"&u=";
     var shareURL = sharerURL + value;
     window.open(shareURL, "_blank");
     gtag('event', 'ShareSentence', {
