@@ -72,7 +72,7 @@
 
   $("#share-twitter").click(function () {
     var value = encodeURIComponent(window.location.href);
-    var description = $('#sentence').html();
+    var description = $('#sentence').text();
     var shareURL='http://twitter.com/share?hashtags=generatorukrepov&url='+value+'&text='+encodeURIComponent(description);
     window.open(shareURL, "_blank");
         
@@ -85,7 +85,7 @@
 
   $("#share-fb").click(function () {
     var value = encodeURIComponent(window.location.href);
-    var description = $('#sentence').html();
+    var description = $('#sentence').text();
     var sharerURL="https://www.facebook.com/sharer/sharer.php?&hashtag=%23generatorukrepov&title="+encodeURIComponent(document.title)+"&quote="+encodeURIComponent(description)+"&u=";
     var shareURL = sharerURL + value;
     window.open(shareURL, "_blank");
@@ -99,7 +99,7 @@
     var templateId = "290174140";
     var url = "https://api.imgflip.com/caption_image";
     var value = "Predlagam naslednji protikoronski ukrep:";
-    var description = $('#sentence').html();
+    var description = $('#sentence').text();
     description = description.replace(/((?:.*?\s){4}.*?)\s/g, '$1\\n');
     //var sharerURL="https://api.memegen.link/images/preview.jpg?template=https://upload.wikimedia.org%2Fwikipedia%2Fcommons%2F7%2F72%2FJelko_Kacin_2013_(cropped).jpg";
     var shareURL="https://urlme.me/uploaded-9fff408e2524f06724140542102d5cad/"+encodeURIComponent(value)+"/"+encodeURIComponent(description)+".jpg";
