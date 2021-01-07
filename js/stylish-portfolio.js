@@ -96,7 +96,7 @@
   });
 
   $("#share-meme").click(function () {
-    var url = "https://ealtbing.sirv.com/Images/Jelko_Kacin_2013_(cropped).jpg?profile=JK&text.0.font.weight=700&text.0.text=_TEXT_&text.0.outline.color=000000&text.0.outline.width=5&text.0.color=ffffff&text.0.size=95&text.0.background.color=ffffff&text.1.text=_TITLE_&text.1.position.gravity=north&text.1.size=80&text.1.color=ffffff&text.1.font.weight=700&text.1.outline.color=000000&text.1.outline.width=10&text.2.text=https%3A%2F%2Fukrepomat.si&text.2.position.gravity=south&text.2.size=40&text.2.color=ffffff&text.2.outline.width=2&brightness=30&colortone=texas";
+    var url = "https://ealtbing.sirv.com/Images/Jelko_Kacin_2013_(cropped).jpg?profile=JK&text.0.font.weight=700&text.0.text=_TEXT_&text.0.outline.color=000000&text.0.outline.width=5&text.0.color=ffffff&text.0.size=95&text.0.background.color=ffffff&text.1.text=_TITLE_&text.1.position.gravity=north&text.1.size=80&text.1.color=ffffff&text.1.font.weight=700&text.1.outline.color=000000&text.1.outline.width=10&text.2.text=https%3A%2F%2Fukrepomat.si&text.2.position.gravity=south&text.2.size=40&text.2.color=ffffff&text.2.outline.width=2&brightness=-30&colortone=texas";
     var value = $('#lbl-title').text().toUpperCase();
     var description = $('#sentence').text().toUpperCase();
     description = description.replace(/((?:.*?\s){3}.*?)\s/g, '$1\n');
