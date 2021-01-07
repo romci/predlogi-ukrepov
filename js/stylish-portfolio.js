@@ -84,7 +84,7 @@
 
 
   $("#share-fb").click(function () {
-    var value = "http://www.google.com"; // encodeURIComponent(window.location.href);
+    var value = encodeURIComponent(window.location.href);
     var description = $('#sentence').text();
     var sharerURL="https://www.facebook.com/sharer/sharer.php?&hashtag=%23ukrepomat&title="+encodeURIComponent(document.title)+"&quote="+encodeURIComponent(description)+"&u=";
     var shareURL = sharerURL + value;
