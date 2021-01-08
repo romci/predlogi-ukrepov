@@ -3,40 +3,83 @@
 
   var dbValues = {};
 
-  $.googleSheetToJSON('1UUGsDwlw74CGjHcms1OTGTx20rPRuBruoUeEmAacq9Y', '')
-    .done(function(rows){
+  var translations = {
+    'SLO': {
+      'sentenceBegin': "Vlada naj",
+      'lblError': "Napaka pri nalaganju, poskusite osvežiti stran",
+      'lblTitle': "Predlagam naslednji proti-koronski ukrep:",
+      'btnTitle': "Predlagaj nov učinkovit proti-koronski ukrep",
+      'btnShareFb': "Deli ukrep na FB",
+      'btnShareTwitter': "Deli ukrep na Twitterju",
+      'lblCallout': "Vladni svetovalci so preobremenjeni z iskanjem novih smiselnih ukrepov proti COVID-19, pomagajmo jim! Na zalogi imamo <span id='total_options'>veliko</span> predlogov!",
+      'documentTitle': "Ukrepomat: generator proti-koronskih ukrepov",
+      'seriousLink': "https://www.nijz.si/sl/koronavirus-2019-ncov",
+      'seriousLinkLbl': "Ampak resno, preglejmo in držimo se osnovnih napotkov za preprečevanje širjenja okužb",
+      'lblDisclaimer': "Stran je seveda satira, 99.9% generiranih ukrepov na tej strani ne bo zadržalo širjenja virusa - vsaj nič bolj kot nekateri vladni ukrepi. :)"
+    },
+    'ENG': {
+      'sentenceBegin': "The government should",
+      'lblError': "Error loading, try refreshing page",
+      'lblTitle': "I propose the following anti-corona mandate:",
+      'btnTitle': "Propose a new effective anti-corona mandate",
+      'btnShareFb': "Share this on FB",
+      'btnShareTwitter': "Share this on Twitter",
+      'lblCallout': "Government advisers are overwhelmed with finding meaningful new mandates against COVID-19, let’s help them! We have <span id='total_options'>lots of</span> suggestions in stock!",
+      'documentTitle': "Ukrepomat: anti-corona mandate generator",
+      'seriousLink': "https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public",
+      'seriousLinkLbl': "But seriously, let’s review and follow the basic guidelines to prevent the spread of infections",
+      'lblDisclaimer': "The site is of course a satire, 99.9% of the mandates generated will not stop the spread of the virus - at least no more than some government mandates. :)"
+    }
+  };
 
-      dbValues = {};
-      rows.forEach(function(row){
-        Object.getOwnPropertyNames(row).forEach(function(name){
-          var val = [].concat(row[name]).join(' / ');
-          if (!dbValues[name]) dbValues[name] = [];
-          dbValues[name].push(val);
+  var currentLanguage = '';
+
+  var sheetsLanguages = {
+    'SLO': '1',
+    'ENG': '2'
+  };
+
+  function init(chosenLanguage) {
+    // not great, not terrible :)
+    currentLanguage = sheetsLanguages[chosenLanguage] ? chosenLanguage : 'ENG';
+
+    $('#lbl-title').html(translations[currentLanguage].lblTitle);
+    $('#btn-title').html(translations[currentLanguage].btnTitle); 
+    $('#btn-share-fb').html(translations[currentLanguage].btnShareFb); 
+    $('#btn-share-twitter').html(translations[currentLanguage].btnShareTwitter); 
+    $('#lbl-callout').html(translations[currentLanguage].lblCallout);
+    $('#serious-link-lbl').html(translations[currentLanguage].seriousLinkLbl);
+    $('#serious-link').prop('href', translations[currentLanguage].seriousLink);
+    $('#lbl-disclaimer').html(translations[currentLanguage].lblDisclaimer);
+    document.title = translations[currentLanguage].documentTitle;
+
+    var currentLanguageSheet = sheetsLanguages[currentLanguage];
+
+    $.googleSheetToJSON('1UUGsDwlw74CGjHcms1OTGTx20rPRuBruoUeEmAacq9Y', currentLanguageSheet)
+      .done(function(rows){
+
+        dbValues = {};
+        rows.forEach(function(row){
+          Object.getOwnPropertyNames(row).forEach(function(name){
+            var val = [].concat(row[name]).join(' / ');
+            if (!dbValues[name]) dbValues[name] = [];
+            dbValues[name].push(val);
+          });
+        });
+        
+        updateDbValues();
+        sentence(location.hash);
+
+      })
+      .fail(function(err){
+        $('#sentence').html(translations[currentLanguage].lblError);
+        gtag('event', 'Errors', {
+          'event_category' : 'GoogleSheetError',
+          'event_label' : err
         });
       });
-      
-      updateDbValues();
-      sentence(location.hash);
+    }
 
-    })
-    .fail(function(err){
-      $('#sentence').html("Napaka pri nalaganju, poskusite osvežiti stran");
-      gtag('event', 'Errors', {
-        'event_category' : 'GoogleSheetError',
-        'event_label' : err
-      });
-    });
-
-
-
-
-  // Closes the sidebar menu
-  $(".menu-toggle").click(function(e) {
-    e.preventDefault();
-    $("#sidebar-wrapper").toggleClass("active");
-    $(".menu-toggle > .fa-bars, .menu-toggle > .fa-times").toggleClass("fa-bars fa-times");
-    $(this).toggleClass("active");
-  });
 
   // Smooth scrolling using jQuery easing
   $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function() {
@@ -50,13 +93,6 @@
         return false;
       }
     }
-  });
-
-  // Closes responsive menu when a scroll trigger link is clicked
-  $('#sidebar-wrapper .js-scroll-trigger').click(function() {
-    $("#sidebar-wrapper").removeClass("active");
-    $(".menu-toggle").removeClass("active");
-    $(".menu-toggle > .fa-bars, .menu-toggle > .fa-times").toggleClass("fa-bars fa-times");
   });
 
   // Scroll to top button appear
@@ -108,7 +144,20 @@
     });    
   });
 
+  $("#selectLanguage button").click(function() {
+    var lang = $(this).attr('rel');
+    selectLanguage(lang);
+  });
 
+  function selectLanguage(lang) {
+    $("#selectLanguage button").removeClass('text-primary');
+    $("#selectLanguage button[rel='"+lang+"']").addClass('text-primary');
+
+    if (lang !== currentLanguage) {
+      $('#sentence').html('<span class="fa-2x"><i class="fas fa-spinner fa-spin"></i></span>');
+      init(lang);
+    }
+  }
 
   var verbs, nouns, adjectives, adverbs, preposition, exceptions, total_options;
 
@@ -134,6 +183,9 @@
 
     if (hash) {
       var unhexed_hash = decodeURIComponent(hash).replace("#", '').split(':');
+      if (unhexed_hash && unhexed_hash.length == 7) { // with language, remove it
+        unhexed_hash.shift();
+      }
       if (unhexed_hash && unhexed_hash.length == 6) {
         rand1 = unhexed_hash[0];
         rand2 = unhexed_hash[1];
@@ -155,13 +207,12 @@
       rand5 = Math.floor(Math.random() * preposition.length);
       rand6 = Math.floor(Math.random() * exceptions.length);
     }
-    var content = "Vlada naj " + nouns[rand1] + " " + verbs[rand2] + " " + adjectives[rand3] + " " + adverbs[rand4] + ", " + exceptions[rand6] + " " + preposition[rand5] +  ".";
+    var content = translations[currentLanguage]['sentenceBegin'] + " " + nouns[rand1] + " " + verbs[rand2] + " " + adjectives[rand3] + " " + adverbs[rand4] + ", " + exceptions[rand6] + " " + preposition[rand5] +  ".";
 
-    var new_hash = [rand1, rand2, rand3, rand4, rand5, rand6].join(':');
+    var new_hash = [currentLanguage, rand1, rand2, rand3, rand4, rand5, rand6].join(':');
     var hexed_hash = encodeURIComponent(new_hash);
 
     location.hash = hexed_hash;
-    // document.title = content;
     $('meta[name="description"]').attr("content", content);
 
     if (set_from_hash) {
@@ -181,6 +232,33 @@
     });          
   });
 
+  function prepareLanguage() {
+    var hash = location.hash;
+    var unhexed_hash = decodeURIComponent(hash).replace("#", '').split(':');
+    var possibleLang = (unhexed_hash.length > 0) ? unhexed_hash[0] : 'N/A';
 
+    if (sheetsLanguages[possibleLang]) {
+      selectLanguage(possibleLang);
+    } else {
+      var jqxhr = $.getJSON( "http://www.geoplugin.net/json.gp?jsoncallback=?", function(data) {
+        var country = data['geoplugin_countryCode'];
+
+        switch (country) {
+          case 'SI':
+            selectLanguage('SLO');
+            break;
+          default:
+            selectLanguage('ENG');
+            break;
+          }
+      })
+      .fail(function() {
+        selectLanguage('SLO');
+      });
+    }
+  }
+
+  // here's the new entry point
+  prepareLanguage();
 
 })(jQuery); // End of use strict
