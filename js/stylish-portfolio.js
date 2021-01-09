@@ -15,7 +15,9 @@
       'documentTitle': "Ukrepomat: generator proti-koronskih ukrepov",
       'seriousLink': "https://www.nijz.si/sl/koronavirus-2019-ncov",
       'seriousLinkLbl': "Ampak resno, preglejmo in držimo se osnovnih napotkov za preprečevanje širjenja okužb",
-      'lblDisclaimer': "Stran je seveda satira, 99.9% generiranih ukrepov na tej strani ne bo zadržalo širjenja virusa - vsaj nič bolj kot nekateri vladni ukrepi. :)"
+      'lblDisclaimer': "Stran je seveda satira, 99.9% generiranih ukrepov na tej strani ne bo zadržalo širjenja virusa - vsaj nič bolj kot nekateri vladni ukrepi. :)",
+      'memeImage': 'Jelko_Kacin_2013_(cropped).jpg',
+      'memeLbl': 'Jelko meme',
     },
     'ENG': {
       'sentenceBegin': "The government should",
@@ -28,7 +30,10 @@
       'documentTitle': "Ukrepomat: anti-corona mandate generator",
       'seriousLink': "https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public",
       'seriousLinkLbl': "But seriously, let’s review and follow the basic guidelines to prevent the spread of infections",
-      'lblDisclaimer': "The site is of course a satire, 99.9% of the mandates generated will not stop the spread of the virus - at least no more than some government mandates. :)"
+      'lblDisclaimer': "The site is of course a satire, 99.9% of the mandates generated will not stop the spread of the virus - at least no more than some government mandates. :)",
+      'memeImage': 'Boris.jpg',
+      'memeLbl': 'Boris meme',
+
     }
   };
 
@@ -51,6 +56,7 @@
     $('#serious-link-lbl').html(translations[currentLanguage].seriousLinkLbl);
     $('#serious-link').prop('href', translations[currentLanguage].seriousLink);
     $('#lbl-disclaimer').html(translations[currentLanguage].lblDisclaimer);
+    $('#meme-lbl').html(translations[currentLanguage].memeLbl);
     document.title = translations[currentLanguage].documentTitle;
 
     var currentLanguageSheet = sheetsLanguages[currentLanguage];
@@ -132,11 +138,12 @@
   });
 
   $("#share-meme").click(function () {
-    var url = "https://ealtbing.sirv.com/Images/Jelko_Kacin_2013_(cropped).jpg?profile=JK&text.0.font.weight=700&text.0.text=_TEXT_&text.0.outline.color=000000&text.0.outline.width=5&text.0.color=ffffff&text.0.size=95&text.0.background.color=ffffff&text.1.text=_TITLE_&text.1.position.gravity=north&text.1.size=80&text.1.color=ffffff&text.1.font.weight=700&text.1.outline.color=000000&text.1.outline.width=10&text.2.text=https%3A%2F%2Fukrepomat.si&text.2.position.gravity=south&text.2.size=40&text.2.color=ffffff&text.2.outline.width=2&brightness=-30&colortone=texas";
+    var url = "https://ealtbing.sirv.com/Images/_IMAGE_?profile=JK&text.0.font.weight=700&text.0.text=_TEXT_&text.0.outline.color=000000&text.0.outline.width=5&text.0.color=ffffff&text.0.size=95&text.0.background.color=ffffff&text.1.text=_TITLE_&text.1.position.gravity=north&text.1.size=80&text.1.color=ffffff&text.1.font.weight=700&text.1.outline.color=000000&text.1.outline.width=10&text.2.text=https%3A%2F%2Fukrepomat.si&text.2.position.gravity=south&text.2.size=40&text.2.color=ffffff&text.2.outline.width=2&brightness=-30&colortone=texas";
     var value = $('#lbl-title').text().toUpperCase();
     var description = $('#sentence').text().toUpperCase();
+    var image = translations[currentLanguage].memeImage;
     description = description.replace(/((?:.*?\s){3}.*?)\s/g, '$1\n');
-    var shareURL = url.replace('_TEXT_', encodeURIComponent(description)).replace('_TITLE_', encodeURIComponent(value));
+    var shareURL = url.replace('_TEXT_', encodeURIComponent(description)).replace('_TITLE_', encodeURIComponent(value)).replace('_IMAGE_', encodeURIComponent(image));
     window.open(shareURL, "_blank");
     gtag('event', 'ShareSentence', {
       'event_category' : 'ShareMeme',
