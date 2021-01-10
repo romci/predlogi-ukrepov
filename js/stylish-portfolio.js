@@ -247,8 +247,10 @@
     if (sheetsLanguages[possibleLang]) {
       selectLanguage(possibleLang);
     } else {
-      var jqxhr = $.getJSON( "http://www.geoplugin.net/json.gp?jsoncallback=?", function(data) {
-        var country = data['geoplugin_countryCode'];
+      var jqxhr = $.getJSON( "https://ipapi.co/json/", function(data) {
+        var country = data['country_code'];
+
+        console.log(data);
 
         switch (country) {
           case 'SI':
