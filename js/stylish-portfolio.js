@@ -247,6 +247,9 @@
     if (sheetsLanguages[possibleLang]) {
       selectLanguage(possibleLang);
     } else {
+      // ALT: https://extreme-ip-lookup.com/json/
+      // ALT2: https://ipinfo.io/json
+      // ALT3: http://geolocation-db.com/json/
       var jqxhr = $.getJSON( "https://ipapi.co/json/", function(data) {
         var country = data['country_code'];
 
