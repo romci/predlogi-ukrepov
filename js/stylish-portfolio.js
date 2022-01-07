@@ -1,3 +1,15 @@
+var sheetURL = 'https://script.google.com/macros/s/AKfycby-FJ8CmtvPBoqImMEhB7-rQOW_Arppc-L8g_8TSzEdMQ4nkIVGSo7Qsz5Tjyuf9gP2RA/exec?sheetName='
+
+var CSVCols = [
+  'vladanaj',
+  'nakaksennacinzakolikocasakdaj',
+  'kateroakcijo',
+  'kateripanogi',
+  'kjezakoga',
+  'izjemapotrdilo',
+  'kaksnaizjemapotrdilo',
+];
+
 (function($) {
   "use strict"; // Start of use strict
 
@@ -61,29 +73,28 @@
 
     var currentLanguageSheet = sheetsLanguages[currentLanguage];
 
-    $.googleSheetToJSON('1UUGsDwlw74CGjHcms1OTGTx20rPRuBruoUeEmAacq9Y', currentLanguageSheet)
-      .done(function(rows){
+    $.get(sheetURL+currentLanguage, function(data) {
+      // parse data as JSON to get the values
+      var rows = data.values;
+      var header = rows[0];
+      dbValues = {};
+      for (var i = 1; i < rows.length; i++) {
+        var obj = {};
+        var currentline = rows[i];
+        for (var j = 0; j < header.length; j++) {
+          var name = CSVCols[j];
+          if (!dbValues[name]) dbValues[name] = [];
+          // if currentline[j] does not exist, is an empty string or undefined, do nothing, otherwise add to the object
+          if (currentline[j]) dbValues[name].push(currentline[j]);
 
-        dbValues = {};
-        rows.forEach(function(row){
-          Object.getOwnPropertyNames(row).forEach(function(name){
-            var val = [].concat(row[name]).join(' / ');
-            if (!dbValues[name]) dbValues[name] = [];
-            dbValues[name].push(val);
-          });
-        });
-        
-        updateDbValues();
-        sentence(location.hash);
+        }
+      }
+      console.log(dbValues);
+      updateDbValues();
+      sentence(location.hash);
+     
+    });
 
-      })
-      .fail(function(err){
-        $('#sentence').html(translations[currentLanguage].lblError);
-        gtag('event', 'Errors', {
-          'event_category' : 'GoogleSheetError',
-          'event_label' : err
-        });
-      });
     }
 
 
